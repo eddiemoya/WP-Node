@@ -62,7 +62,13 @@ class WP_Node {
 
 			)
 		);
-		return $post[0];
+		$post = $post[0];
+
+		if (empty($post)) {
+			$this->insert_post();
+		}
+
+		return $post;
 	}
 
 }

@@ -20,6 +20,7 @@ class WP_Node_Controller {
 
 		add_action("created_$this->taxonomy", array($this, 'create_node'));
 		add_action('init', array($this, 'register_post_type'), 11);
+		add_action('admin_menu', array($this, 'remove_metaboxes'));
 	}
 	
 	public function create_node($term_id, $tt_id = null){
@@ -59,12 +60,12 @@ class WP_Node_Controller {
 			'show_ui' 				=> true, 
 			'show_in_menu' 			=> true, 
 			'query_var' 			=> false,
-			'rewrite' 				=> false,
+			'rewrite' 				=> array('slug' => false, 'with_front' => false),
 			'capability_type' 		=> 'post',
 			'has_archive' 			=> true, 
 			'hierarchical' 			=> false,
 			'menu_position' 		=> null,
-			'supports' 				=> array( 'title', 'custom-fields',  ),
+			'supports' 				=> array( 'title' ),
 			'taxonomies'			=> array( $this->taxonomy )
 		)); 
 
@@ -77,6 +78,10 @@ class WP_Node_Controller {
 
 	public function remove_post_type_support($support){
 		remove_post_type_support($this->post_type, $support);
+	}
+
+	public function remove_metaboxes(){
+		remove_meta_box('categorydiv', 'category', 'side');
 	}
 }
 
