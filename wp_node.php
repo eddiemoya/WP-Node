@@ -8,25 +8,17 @@ class WP_Node {
 	public function __construct($term, $taxonomy = null, $term_field = 'id'){
 		$this->term = get_term_by($term_field, $term, $taxonomy);
 		$this->post = $this->get_post($term, $taxonomy);
-	}
+		$this->register_term_meta();
 
+	}
 
 	/**
 	 * TODO: Allow for some way of mapping logic to metadata or other taxonomies/terms
 	 */
-	public function register_term_meta(){
+	private function register_term_meta(){
 		if(empty($this->post)){
 			$this->post = $this->insert_post();
 		}
-	}
-
-	public function add_meta_data($key, $value){
-		add_post_meta($this->post->ID, $key, $value, true);
-	}
-
-
-	public function get_meta_data($key){
-		return get_post_meta($this->post->ID, $key, true);
 	}
 
 	/**
@@ -49,7 +41,7 @@ class WP_Node {
 	private function get_post($term_id, $taxonomy = null){
 		$post = get_posts( 
 			array(
-				'post_type' => 'skcategory',
+				'post_type' => $taxonomy,
 				'tax_query' => array(
 					array(
 						'terms' => $this->term->slug,
@@ -61,7 +53,11 @@ class WP_Node {
 
 			)
 		);
-		return $post[0];
+		if(!empty($post)){
+			$post = $post[0];
+		}
+	
+		return $post;
 	}
 
 }

@@ -3,6 +3,7 @@
 class WP_Node_Controller {
 	private $taxonomy;
 	private $post_type;
+	private $node;
 
 	/**
 	 * @author Eddie Moya
@@ -18,14 +19,14 @@ class WP_Node_Controller {
 	 */
 	public function actions(){
 
-		add_action("created_$this->taxonomy", array($this, 'create_node'));
-		add_action('init', array($this, 'register_post_type'), 11);
+		add_action( "created_$this->taxonomy", array($this, 'create_node'));
+		add_action( "edited_$this->taxonomy", array($this, 'create_node'));
+		add_action('init', 						array($this, 'register_post_type'), 11);
 	}
 	
 	public function create_node($term_id, $tt_id = null){
-		$node = new WP_Node($term_id, $this->taxonomy);
-		$node->register_term_meta();
-		
+		$this->node = new WP_Node($term_id, $this->taxonomy);
+	
 	}
 
 
@@ -70,6 +71,26 @@ class WP_Node_Controller {
 
 		register_post_type($this->post_type, $args);
 	}
+
+
+
+	public function add_node_meta($key, $value){
+    	add_post_meta($this->node->post->ID, $key, $value, true);
+    }
+
+
+   	public function get_node_meta($key){
+   		//print_pre($this);
+   	  	return get_post_meta($this->node->post->ID, $key, true);
+   	}
+
+   	public function get_post(){
+   		return $this->node->post;
+   	}
+
+   	public function get_node(){
+   		return $this->node;
+   	}
 }
 
 
