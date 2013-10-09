@@ -1,6 +1,6 @@
 <?php
 
-class WP_Node_Controller {
+class WP_Node_Factory {
 	private $taxonomy;
 	private $post_type;
 	private $node;
@@ -26,7 +26,6 @@ class WP_Node_Controller {
 	
 	public function create_node($term_id, $tt_id = null){
 		$this->node = new WP_Node($term_id, $this->taxonomy);
-	
 	}
 
 
