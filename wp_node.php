@@ -53,9 +53,7 @@ class WP_Node {
 
 			)
 		);
-		if(!empty($post)){
-			$post = $post[0];
-		}
+
 	
 		return $post;
 	}
