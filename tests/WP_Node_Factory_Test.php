@@ -50,7 +50,7 @@ class WP_Node_Factory_Test extends WP_UnitTestCase {
 
 
 	/**
-	 * @uses WP_Node_Controller::create_node()
+	 * @uses WP_Node_Controller::create_node();
 	 * @uses WP_Node_Controller::get_post();
 	 */
 	public function testNodeFactory_getPost()
@@ -85,6 +85,8 @@ class WP_Node_Factory_Test extends WP_UnitTestCase {
 		$this->assertInternalType('string', $returned_meta);
 		$this->assertEquals($meta_value, $returned_meta);
 	}
+
+	
 
 
 }
