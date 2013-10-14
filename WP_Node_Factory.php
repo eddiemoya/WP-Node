@@ -26,6 +26,7 @@ class WP_Node_Factory {
 	
 	public function create_node($term_id, $tt_id = null){
 		$this->node = new WP_Node($term_id, $this->taxonomy);
+		$this->node->register_node();
 	}
 
 
@@ -90,6 +91,32 @@ class WP_Node_Factory {
    	public function get_node(){
    		return $this->node;
    	}
+
+
+   	/**
+	 * This tests that we are able to create single posts will NULL post type and a colon for a title.
+	 * Just like test_colon_bug() but uses a null variable for the term.
+	 *
+	 * @group wpnode
+	 * @group wpnode_class
+	 * @group bugfixes
+	 * @group colonbug
+	 *
+	 */
+	public function test_colon_bug_null_term(){
+
+		$term = NULL;
+
+		$node = new WP_Node_Factory($term, $term);
+
+		$colon_post = get_page_by_title(': ', 'OBJECT', 'post');
+		$query = new WP_Query('post_type=post');
+
+		$this->assertAttributeEquals(0, 'post_count', $query, 'Test for Colon Bug failed. Wrong number of posts exist.');
+		$this->assertAttributeEmpty('posts', $query, 'Test for Colon Bug failed. Wrong number of posts exist.');
+		$this->assertNull($colon_post, 'Test for the Colon Bug failed. Found a post with a colon as the title');
+	}
+
 }
 
 
