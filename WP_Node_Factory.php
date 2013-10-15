@@ -79,7 +79,7 @@ class WP_Node_Factory {
     }
 
     public function update_node_meta($key, $value){
-    	add_post_meta($this->node->post->ID, $key, $value, true);
+    	update_post_meta($this->node->post->ID, $key, $value, true);
     }
 
 
