@@ -21,7 +21,7 @@ class WP_Node_Factory {
 
 		add_action( "created_$this->taxonomy", array($this, 'create_node'));
 		add_action( "edited_$this->taxonomy", array($this, 'create_node'));
-		add_action('init', 						array($this, 'register_post_type'), 11);
+		add_action('init', 					array($this, 'register_post_type'), 11);
 	}
 	
 	public function create_node($term_id, $tt_id = null){
@@ -79,7 +79,8 @@ class WP_Node_Factory {
     }
 
     public function update_node_meta($key, $value){
-    	update_post_meta($this->node->post->ID, $key, $value, true);
+    	//print_pre($this->node);
+    	update_post_meta($this->node->post->ID, $key, $value);
     }
 
 
