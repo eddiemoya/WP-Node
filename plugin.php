@@ -18,3 +18,4 @@ include (WPNODE_PATH 		. 'WP_Node.php');
 include (WPNODE_PATH 		. 'meta-importer.php');
 
 add_action('init', create_function('', 'new WP_Node_Factory("skcategory");'), 10);
+add_action('init', create_function('', 'new WP_Node_Factory("category");'), 10);
