@@ -25,7 +25,7 @@ class WP_Node {
 	public function register_node()
 	{
 		$return['set_object'] = $this->set_post();
-	
+
 		if(is_null($this->post) && isset($this->term)){
 
 			$return['inserted_id'] = $this->insert_post();
@@ -75,15 +75,18 @@ class WP_Node {
 		$post_args = array( 
 			'post_type' => $this->term->taxonomy,
 			'tax_query' => array(
+				array(
 					'terms' => $this->term->slug,
 					'taxonomy' => $this->term->taxonomy,
 					'field' => 'slug',
 					'include_children' => false, //wtf
-					'operator' => 'IN'
+				)
+	
 			)
 		);
 		//print_p
 		$post = get_posts($post_args);
+	
 		$post = array_shift($post);
 
 		$this->post = $post;
