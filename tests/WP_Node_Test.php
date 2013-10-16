@@ -95,6 +95,8 @@ class WP_Node_Test extends WP_UnitTestCase {
 		$this->assertArrayHasKey('set_object', $response);
 		$this->assertArrayHasKey('inserted_id', $response);
 
+		//print_r($response);
+
 		// Assert that set is a stdClass object, and insert_id is an integer
 		$this->assertInstanceOf('stdClass', $response['set_object']);
 		$this->assertInternalType('integer', $response['inserted_id']);

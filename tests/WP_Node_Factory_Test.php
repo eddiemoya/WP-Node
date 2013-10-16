@@ -71,7 +71,7 @@ class WP_Node_Factory_Test extends WP_UnitTestCase {
 	 * @uses WP_Node_Controller::add_node_meta();
 	 * @uses WP_Node_Controller::get_node_meta();
 	 */
-	public function testNodeFactory_nodeMeta()
+	public function testNodeFactory_addNodeMeta()
 	{
 		$node_factory = new WP_Node_Factory($this->term->taxonomy);
 		$node_factory->create_node($this->term->term_id);
@@ -86,7 +86,27 @@ class WP_Node_Factory_Test extends WP_UnitTestCase {
 		$this->assertEquals($meta_value, $returned_meta);
 	}
 
-	
+	/**
+	 * @uses WP_Node_Controller::create_node()
+	 * @uses WP_Node_Controller::update_node_meta();
+	 * @uses WP_Node_Controller::get_node_meta();
+	 */
+	public function testNodeFactory_updateNodeMeta()
+	{
+		$node_factory = new WP_Node_Factory($this->term->taxonomy);
+		$node_factory->create_node($this->term->term_id);
+
+		$meta_key = "meta_test_key";
+		$meta_value = "meta_test_value";
+
+		$post = $node_factory->update_node_meta($meta_key, $meta_value);
+		$returned_meta = $node_factory->get_node_meta($meta_key);
+
+		$this->assertInternalType('string', $returned_meta);
+		$this->assertEquals($meta_value, $returned_meta);
+	}
+
+
 
 
 }
