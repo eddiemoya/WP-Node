@@ -81,12 +81,22 @@ class WP_Node_Test extends WP_UnitTestCase {
 
 	}
 
+
 	/**
+	 * Test to ensure that when a node is created, that the post created for it is added to the taxonomy term correctly, and can be retreived correctly
 	 * @group wpnode
 	 * @group wpnode_class
 	 */
-	public function testNode_registerNode_new()
-	{
+	public function testNode_registerNode_insertion(){
+		$post_args = array(
+			'post_status' 	=> 'publish',
+			'post_title' 	=> 'Bad Post',
+			'post_type' 	=> $this->term->taxonomy,
+		);
+
+		$bad_post = get_post(wp_insert_post($post_args));
+		$bad_post2 = get_post(wp_insert_post($post_args));
+		$bad_post3 = get_post(wp_insert_post($post_args));
 
 		$node = new WP_Node($this->term->term_id, $this->term->taxonomy);
 		$response = $node->register_node();
@@ -95,7 +105,40 @@ class WP_Node_Test extends WP_UnitTestCase {
 		$this->assertArrayHasKey('set_object', $response);
 		$this->assertArrayHasKey('inserted_id', $response);
 
-		//print_r($response);
+
+
+		$query = new WP_Query(
+			array( 
+				'post_type' => $this->term->taxonomy,
+				'posts_per_page' => -1,
+				'tax_query' => 
+				array(
+					array(
+						'terms' => array($this->term->slug),
+						'taxonomy' => $this->term->taxonomy,
+						'field' => 'slug',
+					)
+				)
+			)
+		);
+		$post = $query->post;
+
+		$this->assertInstanceOf('stdClass', $post);
+		$this->assertAttributeEquals($response['inserted_id'], 'ID', $post);
+	}
+
+	/**
+	 * @group wpnode
+	 * @group wpnode_class
+	 */
+	public function testNode_registerNode_new()
+	{
+		$node = new WP_Node($this->term->term_id, $this->term->taxonomy);
+		$response = $node->register_node();
+
+		// Assert that the array contains a set_object and an insert_id key
+		$this->assertArrayHasKey('set_object', $response);
+		$this->assertArrayHasKey('inserted_id', $response);
 
 		// Assert that set is a stdClass object, and insert_id is an integer
 		$this->assertInstanceOf('stdClass', $response['set_object']);
