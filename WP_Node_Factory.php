@@ -26,7 +26,7 @@ class WP_Node_Factory {
 	
 	public function create_node($term_id, $tt_id = null){
 		$this->node = new WP_Node($term_id, $this->taxonomy);
-		$this->node->register_node();
+		return $this->node->register_node();
 	}
 
 
