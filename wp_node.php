@@ -50,11 +50,13 @@ class WP_Node {
 				'post_status' 	=> 'publish',
 				'post_type' 	=> $this->term->taxonomy,
 				'post_name'		=> $this->term->slug,
-				'post_title' 	=> ucfirst($this->term->taxonomy).': '.$this->term->name,
-				'tax_input'		=> array( $this->term->taxonomy => array($this->term->term_id))
+				'post_title' 	=> ucfirst($this->term->taxonomy).': '.$this->term->name
 			);
 
 			$post_id = wp_insert_post($post_args);
+
+			wp_set_object_terms($post_id, $this->term->slug, $this->term->taxonomy);
+
 			return $post_id;
 		} else {
 			return NULL;
@@ -74,24 +76,25 @@ class WP_Node {
 	{
 		$post_args = array( 
 			'post_type' => $this->term->taxonomy,
-			'tax_query' => array(
+			'posts_per_page' => -1,
+			'tax_query' => 
+			array(
 				array(
-					'terms' => $this->term->slug,
+					'terms' => array($this->term->slug),
 					'taxonomy' => $this->term->taxonomy,
 					'field' => 'slug',
-					'include_children' => false, //wtf
 				)
-	
 			)
+
 		);
-		//print_p
+
+		//print_r($post_args);
 		$post = get_posts($post_args);
-	
-		$post = array_shift($post);
 
-		$this->post = $post;
+		//print_r($post);
+		$this->post = array_shift($post);
 
-		return $post;
+		return $this->post;
 	}
 
 }
