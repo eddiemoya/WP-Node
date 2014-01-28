@@ -59,13 +59,14 @@ class WP_Node_Factory {
 			'publicly_queryable' 	=> true,
 			'show_ui' 				=> true, 
 			'show_in_menu' 			=> true, 
-			'query_var' 			=> false,
+			'query_var' 			=> true,
 			'rewrite' 				=> false,
 			'capability_type' 		=> 'post',
 			'has_archive' 			=> true, 
 			'hierarchical' 			=> false,
 			'menu_position' 		=> null,
-			'supports' 				=> array( 'title', 'custom-fields',  ),
+			'supports' 				=> array( 'title' ),
+			'exclude_from_search' => false,
 			'taxonomies'			=> array( $this->taxonomy )
 		)); 
 
