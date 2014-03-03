@@ -4,14 +4,17 @@ class WP_Node_Factory {
 	private $taxonomy;
 	private $post_type;
 	private $node;
+	private $object_type;
 
 	/**
 	 * @author Eddie Moya
 	 */
-	public function __construct($taxonomy, $post_type = null){
-		$this->taxonomy = $taxonomy;
-		$this->post_type = (!empty($post_type)) ? $post_type : $this->taxonomy;
-		$this->actions();
+	public function __construct($object_slug, $object_type = "term", $args = null){
+
+			$this->taxonomy = $object_slug;
+			$this->post_type = $object_slug;
+			$this->object_type = $object_type;
+			$this->actions();
 	}
 
 	/**
