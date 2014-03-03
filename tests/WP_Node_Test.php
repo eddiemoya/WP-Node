@@ -1,5 +1,5 @@
 <?php
-
+require_once dirname(dirname(__FILE__))."/WP_Node.php";
 class WP_Node_Test extends WP_UnitTestCase {
 	public $plugin_slug = 'wp-node';
 	public $term;
@@ -14,7 +14,26 @@ class WP_Node_Test extends WP_UnitTestCase {
 		wp_delete_post(1, true);
 		$term = wp_insert_term('test-category', 'category');
 		$this->term = get_term_by('slug', 'test-category', 'category');
+		//add_action( 'init', array($this,'create_post_tax'), 0 );
 	}
+
+
+	// public function create_post_tax() {
+	// 	register_taxonomy('balls','post');
+		
+	// }
+
+	// /**
+	//  * @group wpnode
+	//  * @group wpnode_class
+	//  */
+	// public function testInsertTerm(){
+	// 	$test = wp_insert_term('test', 'balls');
+	// 	$taxes = get_taxonomies();
+	// 	print_r($taxes);
+
+	// }
+
 
 	/**
 	 * @group wpnode
@@ -86,6 +105,7 @@ class WP_Node_Test extends WP_UnitTestCase {
 	 * Test to ensure that when a node is created, that the post created for it is added to the taxonomy term correctly, and can be retreived correctly
 	 * @group wpnode
 	 * @group wpnode_class
+	 * @group wpnode_class_register_insertion
 	 */
 	public function testNode_registerNode_insertion(){
 		$post_args = array(
@@ -104,6 +124,7 @@ class WP_Node_Test extends WP_UnitTestCase {
 		// Assert that the array contains a set_object and an insert_id key
 		$this->assertArrayHasKey('set_object', $response);
 		$this->assertArrayHasKey('inserted_id', $response);
+
 
 
 
@@ -130,6 +151,7 @@ class WP_Node_Test extends WP_UnitTestCase {
 	/**
 	 * @group wpnode
 	 * @group wpnode_class
+	 * @group wpnode_class_register_new
 	 */
 	public function testNode_registerNode_new()
 	{
@@ -280,6 +302,31 @@ class WP_Node_Test extends WP_UnitTestCase {
 		$this->assertAttributeEmpty('posts', $query, 'Test for Colon Bug failed. Wrong number of posts exist.');
 		$this->assertNull($colon_post, 'Test for the Colon Bug failed. Found a post with a colon as the title');
 	}
+
+	/**
+	 * This is a test to check that if a post is created the node still works
+	 *
+	 * @group wpnode
+	 * @group wpnode_class
+	 * @group wpnode_class_post_based
+	 */
+	public function test_post_based_node(){
+
+
+		$post_args = array(
+				'post_status' 	=> 'publish',
+				'post_title' 	=> 'Test Post',
+				'post_type' 	=> 'post'
+		);
+
+		$inserted = get_post(wp_insert_post($post_args));
+
+		//print_r($inserted);
+		$node = new WP_Node($inserted->ID, $inserted->post_type, 'id', 'post');
+		//print_r($node);
+		 $response = $node->register_node();
+	}
+
 
 
 }
