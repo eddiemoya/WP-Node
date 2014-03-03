@@ -159,6 +159,26 @@ class WP_Node {
 		}
 	}
 
+
+	/**
+	 * Sets the term by retrieving it from the database.
+	 *
+	 */
+	private function set_term(){
+
+		$terms = wp_get_post_terms($this->post->ID, $this->post->post_type, array("fields" => "all"));
+
+		if(empty($terms) || is_wp_error($terms))
+			return NULL;
+
+
+		$this->term = $terms[0];
+		//echo "<pre>"; print_r($terms); echo "</pre>"; exit();
+		return $terms;
+
+	
+	}
+
 	/**
 	 * Sets the post by retrieving it from the database. 
 	 * This should be the way it the post object is always retrieved.
@@ -190,6 +210,7 @@ class WP_Node {
 		//print_r($post);
 		$this->post = array_shift($post);
 
+		//print_r($this);
 		return $this->post;
 	}
 
