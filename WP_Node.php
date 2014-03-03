@@ -147,8 +147,10 @@ class WP_Node {
 				'post_title' 	=> ucfirst($this->term->taxonomy).': '.$this->term->name
 			);
 
-			$post_id = wp_insert_post($post_args);
+			//print_r($post_args);
+			$post_id = wp_insert_post($post_args, true);
 
+			//print_r(array($post_id));
 			wp_set_object_terms($post_id, $this->term->slug, $this->term->taxonomy);
 
 			return $post_id;
