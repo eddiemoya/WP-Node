@@ -22,9 +22,27 @@ class WP_Node_Factory {
 	 */
 	public function actions(){
 
-		add_action( "created_$this->taxonomy", array($this, 'create_node'));
-		add_action( "edited_$this->taxonomy", array($this, 'create_node'));
-		add_action('init', 					array($this, 'register_post_type'), 11);
+		if($this->object_type == "term"){
+			add_action( "created_$this->taxonomy", 	array($this, 'create_node'));
+			add_action( "edited_$this->taxonomy", 	array($this, 'create_node'));
+			add_action('init', 						array($this, 'register_post_type'), 11);
+		}
+
+		if($this->object_type == "post") {
+			add_action( 'admin_enqueue_scripts',	array($this, 'admin_enqueue_scripts' ));
+
+			add_action( "save_post", 				array($this, 'create_node'));
+			add_action('init', 						array($this, 'register_taxonomy'), 11);
+			add_action( 'transition_post_status', 	array($this, 'transition_post_status'), 10, 3 );		
+		}
+
+		
+	}
+
+	function admin_enqueue_scripts() {
+    	if ( $this->post_type == get_post_type() ){
+	        wp_dequeue_script( 'autosave' );
+	    }
 	}
 	
 	public function create_node($term_id, $tt_id = null){
