@@ -3,6 +3,7 @@
 class WP_Node {
 	public $term;
 	public $post;
+	private $_node_type;
 
 
 	public function __construct($term, $taxonomy = null, $term_field = 'id')
