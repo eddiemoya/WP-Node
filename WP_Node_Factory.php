@@ -105,6 +105,39 @@ class WP_Node_Factory {
 	}
 
 
+	public function register_taxonomy(){
+
+		$labels = apply_filters("wp_node_taxonomy_{$this->taxonomy}_labels", array(
+			'name' 					=> _x(ucfirst($this->post_type) .'s', 'post type general name'),
+			'singular_name' 		=> _x(ucfirst($this->post_type), 'post type singular name'),
+			'add_new_item' 			=> __('Add New ' . ucfirst($this->post_type)),
+			'edit_item' 			=> __('Edit ' . ucfirst($this->post_type)),
+			'new_item' 				=> __('New ' . ucfirst($this->post_type)),
+			'all_items' 			=> __('All ' . ucfirst($this->post_type) . 's'),
+			'view_item' 			=> __('View ' . ucfirst($this->post_type) . 's'),
+			'search_items' 			=> __('Search ' .ucfirst($this->post_type) .'s'),
+			'not_found' 			=> __("No {$this->post_type}s found"),
+			'menu_name' 			=> __(ucfirst($this->post_type))
+		));
+
+
+		$args = apply_filters("wp_node_taxonomy_{$this->taxonomy}_args", array(
+			'label'					=> $this->post_type,
+			'labels'				=> $labels,
+			'public' 				=> false,
+			'show_ui' 				=> false, 
+			'rewrite' 				=> false,
+			'capability_type' 		=> 'post', 
+			'hierarchical' 			=> true,
+			'exclude_from_search' => false,
+			'taxonomies'			=> array( $this->taxonomy )
+		)); 
+
+		$post_type = apply_filters("wp_node_taxonomy_{$this->taxonomy}_post_types", $this->post_type);
+
+		register_taxonomy($this->taxonomy, $post_type, $args);
+	}
+
 
 	public function add_node_meta($key, $value){
     	add_post_meta($this->node->post->ID, $key, $value, true);
