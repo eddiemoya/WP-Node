@@ -1,4 +1,5 @@
 <?php
+require_once dirname(dirname(__FILE__))."/WP_Node_Factory.php";
 
 class WP_Node_Factory_Test extends WP_UnitTestCase {
 	public $term;
