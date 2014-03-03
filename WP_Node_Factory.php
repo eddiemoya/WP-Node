@@ -45,8 +45,18 @@ class WP_Node_Factory {
 	    }
 	}
 	
-	public function create_node($term_id, $tt_id = null){
-		$this->node = new WP_Node($term_id, $this->taxonomy);
+	public function create_node($id, $obj = null){
+
+		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) 
+      		return $post_id;
+
+        if(defined('DOING_AJAX')) 
+    		return;
+
+      	if ( $this->object_type == "post" && $this->post_type != $_POST['post_type'] ) 
+      		return $post_id;
+
+		$this->node = new WP_Node($id, $this->taxonomy, 'id', $this->object_type);
 		return $this->node->register_node();
 	}
 
