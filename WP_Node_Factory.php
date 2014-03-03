@@ -161,6 +161,22 @@ class WP_Node_Factory {
    	public function get_node(){
    		return $this->node;
    	}
+
+
+   	public function transition_post_status( $new_status, $old_status, $post ) {
+
+   		if ( $post->post_type != $this->post_type ) 
+	    	return;
+
+	    if ( $old_status == 'publish' && $new_status != 'publish' ) {
+
+			$this->node = new WP_Node($post->ID, $this->taxonomy, 'id', $this->object_type);
+			$this->node->register_node();
+
+	        wp_delete_term($this->node->term->term_id, $this->taxonomy);
+	    }
+	}
+
 }
 
 
