@@ -6,9 +6,25 @@ class WP_Node {
 	private $_node_type;
 
 
-	public function __construct($term, $taxonomy = null, $term_field = 'id')
+	/**
+	 * @param $object_id (object|int) WP_Term | WP_Post
+	 * @param $object_group (string) Taxonomy | Post Type
+	 * @param $object_field (string) "id" | "slug"
+	 * @param $object_type (string) "term" | "post"
+	 */
+	public function __construct($object, $object_group = null, $object_field = 'id', $object_type = "term")
 	{
-		$this->term = get_term_by($term_field, $term, $taxonomy);
+		$this->_node_type = $object_type;
+
+		if($object_type == "term"){
+			$this->term = get_term_by($object_field, $object, $object_group);
+		}
+		
+		if($object_type == "post" ) {
+			if($object_field == 'id'){
+				$this->post = get_post($object);
+			}
+		}
 		//$this->post = $this->get_post($term, $taxonomy);
 		//$this->register_term_meta();
 	}
