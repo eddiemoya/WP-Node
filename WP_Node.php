@@ -41,14 +41,34 @@ class WP_Node {
 	 */
 	public function register_node()
 	{
-		$return['set_object'] = $this->set_post();
+		if($this->_node_type == "term"){
 
-		if(is_null($this->post) && isset($this->term)){
-
-			$return['inserted_id'] = $this->insert_post();
 			$return['set_object'] = $this->set_post();
 
+			if(is_null($this->post) && isset($this->term)){
+
+				$return['inserted_id'] = $this->insert_post();
+				$return['set_object'] = $this->set_post();
+
+			} 
 		}
+
+		if ($this->_node_type == "post"){
+
+			$return['set_object'] = $this->set_term();
+			//echo "<pre>"; print_r($this); echo "</pre>";
+			if (is_null($this->term) && isset($this->post)) {
+
+		 	 	$return['inserted_id'] = $this->insert_term();
+			    $return['set_object'] = $this->set_term();
+
+		 	} else {
+		 		$return['set_object'] = $this->update_term();
+		 	}
+		}
+
+
+		//print_r($return);
 		
 		return $return;
 	}
