@@ -73,6 +73,63 @@ class WP_Node {
 		return $return;
 	}
 
+
+
+	/**
+	 * 
+	 *
+	 *
+	 */
+	private function update_term(){
+
+		if(isset($this->term)){
+			$term_args = array(
+				'name' => $this->post->post_title,
+				'slug' => sanitize_title($this->post->post_title)
+			);
+
+			//print_r($term_args);
+			//print_r($this->term->taxonomy);
+			$term = wp_update_term($this->term->term_id, $this->term->taxonomy, $term_args);
+			//print_r($term);exit();
+
+		}
+	}
+
+
+	/**
+	 * 
+	 * @uses wp_insert_term();
+	 * @uses wp_get_term_by();
+	 * @uses wp_set_object_terms();
+	 *
+	 */
+	private function insert_term(){
+
+		if(isset($this->post)){
+			$term_args = array(
+				'title' => apply_filters("wp_node_insert_term_title_".$this->post->post_type, $this->post->post_title, $this->post),
+				'slug' => apply_filters("wp_node_insert_term_slug_".$this->post->post_type, $this->post->post_name, $this->post),
+				'taxonomy' =>$this->post->post_type
+			);
+
+			//print_r($term_args);
+
+			$response = wp_insert_term($term_args['title'], $term_args['taxonomy'], array('slug' => $term_args['slug']));
+			//echo "<pre>"; print_r($response); echo "</pre>"; 
+
+			$term = get_term_by('id', $response['term_id'], $this->post->post_type);
+			//echo "<pre>"; print_r($term); echo "</pre>";
+
+			$term_id = wp_set_object_terms($this->post->ID, $term->slug, $term->taxonomy);
+			//echo "<pre>"; print_r($response); echo "</pre>"; 
+
+			return $term_id;
+		} else {
+			return NULL;
+		}
+	}
+
 	/**
 	 * Inserts the post and sets sets its term at the same time
 	 *
