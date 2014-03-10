@@ -19,3 +19,21 @@ include (WPNODE_PATH 		. 'meta-importer.php');
 
 
 add_action('init', create_function('', 'new WP_Node_Factory("nani_dialysis_center", "post");'), 10);
+
+
+
+//Actually Identical functions, but use 
+function get_node_by_term($taxonomy, $term_id){
+	$factory = new WP_Node_Factory($taxonomy, 'term');
+	$factory->create_node($term_id);
+	return $factory->get_node();
+}
+
+function get_node_by_post($post_type, $post_id){
+
+	$_POST['post_type'] = $post_type;
+	$factory = new WP_Node_Factory($post_type, 'post');
+	$factory->create_node($post_id, 'post');
+	return $factory->get_node();
+	
+}
