@@ -53,6 +53,8 @@ class WP_Node_Factory {
         if(defined('DOING_AJAX')) 
     		return;
 
+    	delete_option("{$this->taxonomy}_children");
+
       	if ( $this->object_type == "post" && $this->post_type != $_POST['post_type'] ) 
       		return $post_id;
 
@@ -136,6 +138,7 @@ class WP_Node_Factory {
 		$post_type = apply_filters("wp_node_taxonomy_{$this->taxonomy}_post_types", $this->post_type);
 
 		register_taxonomy($this->taxonomy, $post_type, $args);
+		register_taxonomy_for_object_type( $this->taxonomy, $post_t ); 
 	}
 
 
