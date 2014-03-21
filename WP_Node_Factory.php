@@ -36,19 +36,19 @@ class WP_Node_Factory {
 	public function register_post_type(){
 
 		$labels = apply_filters("wp_node_post_type_{$this->taxonomy}_labels", array(
-			'name' 					=> _x(ucfirst($this->post_type) .'s', 'post type general name'),
-			'singular_name' 		=> _x(ucfirst($this->post_type), 'post type singular name'),
+			'name' 					=> _x(ucfirst($this->post_type) .' Layout', 'post type general name'),
+			'singular_name' 		=> _x(ucfirst($this->post_type) . ' Layout', 'post type singular name'),
 			'add_new' 				=> _x('Add New', $this->post_type),
-			'add_new_item' 			=> __('Add New ' . ucfirst($this->post_type)),
-			'edit_item' 			=> __('Edit ' . ucfirst($this->post_type)),
-			'new_item' 				=> __('New ' . ucfirst($this->post_type)),
-			'all_items' 			=> __('All ' . ucfirst($this->post_type) . 's'),
-			'view_item' 			=> __('View ' . ucfirst($this->post_type) . 's'),
-			'search_items' 			=> __('Search ' .ucfirst($this->post_type) .'s'),
-			'not_found' 			=> __("No {$this->post_type}s found"),
-			'not_found_in_trash' 	=> __("No {$this->post_type}s found in Trash"), 
+			'add_new_item' 			=> __('Add New Layout'),
+			'edit_item' 			=> __('Edit Layout'),
+			'new_item' 				=> __('New Layout'),
+			'all_items' 			=> __('All Layouts'),
+			'view_item' 			=> __('View Layouts'),
+			'search_items' 			=> __('Search Layouts'),
+			'not_found' 			=> __("No Layouts found"),
+			'not_found_in_trash' 	=> __("No Layouts found in Trash"), 
 			'parent_item_colon' 	=> '',
-			'menu_name' 			=> __(ucfirst($this->post_type))
+			'menu_name' 			=> __(ucfirst($this->post_type) . ' Layout')
 		));
 
 
